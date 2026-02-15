@@ -27,7 +27,6 @@ export default function History() {
         obtenerDatos 
     } = useFinanceStore();
 
-
     // Combinamos ingresos y gastos en un solo array. Añadimos una propiedad 'tipo' a cada movimiento para identificar su 
     const todasLasTransacciones = [
         // Convertimos cada ingreso a un objeto con propiedad 'tipo'
@@ -71,21 +70,23 @@ export default function History() {
                 <Header />
 
                 {/* Contenedor principal del historial */}
-                <div className="space-y-2 rounded-xl bg-[#111] p-4 border border-[#222]">
+                <div className="space-y-2 rounded-xl bg-[#111] p-4 border border-[#222]
+                animate-fade">
                   {/* Título y contador de registros */}
                   <div className="flex justify-between items-center px-2 mb-4">
                     <div className="flex items-center gap-2 h-8 z-10">
                         <LuHistory className="text-gray-500 text-base" />
                         <h3 className="font-bold text-gray-500 text-xs uppercase tracking-widest">HISTORIAL DE TRANSACCIONES</h3>
                     </div>
-                      <span className="text-[10px] bg-[#111] border border-[#222] px-2 py-1 rounded text-gray-400 uppercase tracking-widest">
-                          {todasLasTransacciones.length} registros
+                      <span className="text-[10px] bg-[#111] border border-[#222] px-2 py-1 rounded text-gray-400  tracking-widest">
+                          {todasLasTransacciones.length} REGISTROS
                       </span>
                   </div>
 
                     {/* Lista de transacciones */}
                     {todasLasTransacciones.map((transaccion) => (
-                        <div key={transaccion.id} className="group bg-[#111] border border-[#222] p-4 rounded-xl flex items-center justify-between hover:border-[#333] transition-all">
+                        <div key={transaccion.id} className="group bg-[#111] border border-[#222] p-4 rounded-xl flex items-center justify-between hover:border-[#333] transition-all
+                        animate-fade animate-delay-100">
                             {/* Información de la transacción */}
                             <div className="flex items-center gap-2">
                                 <div className="flex items-center gap-4">
@@ -94,6 +95,7 @@ export default function History() {
                                         {transaccion.tipo === 'ingresos' ? <LuArrowUp size={16} /> : <LuArrowDown size={16} />}
                                     </div>
                                 </div>
+                                
                                 <div>
                                     <p className="font-medium text-gray-200">{transaccion.descripcion}</p>
                                     {/* Fecha formateada en español */}
@@ -133,7 +135,8 @@ export default function History() {
 
                     {/* Mensaje cuando no hay transacciones */}
                     {todasLasTransacciones.length === 0 && (
-                        <div className="py-20 text-center border-2 border-dashed border-[#111] rounded-2xl">
+                        <div className="py-20 text-center border-2 border-dashed border-[#111] rounded-2xl
+                        animate-fade animate-delay-100">
                             <p className="text-gray-600 text-sm italic">No hay movimientos registrados aún.</p>
                         </div>
                     )}

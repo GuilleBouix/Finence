@@ -1,4 +1,4 @@
-import { LuTrash2, LuTriangleAlert } from 'react-icons/lu';
+import { LuTriangleAlert } from 'react-icons/lu';
 
 interface ConfirmDeleteModalProps {
     transaction: any | null;
@@ -19,25 +19,24 @@ export default function ConfirmDeleteModal({ transaction, onConfirm, onClose }: 
                 </div>
 
                 <div className="space-y-2">
-                    <h3 className="text-lg font-bold text-white">¿Eliminar movimiento?</h3>
-                    <p className="text-sm text-gray-400">
-                        Estás a punto de borrar <span className="text-white font-medium">"{transaction.descripcion}"</span>. 
-                        Esta acción no se puede deshacer.
+                    <h3 className="font-bold text-white uppercase tracking-widest">¿Eliminar movimiento?</h3>
+                    <p className="text-sm text-gray-500">
+                        Estás a punto de borrar <span className="text-white font-medium">"{transaction.descripcion}"</span>.
                     </p>
                 </div>
 
                 <div className="flex gap-3 pt-2">
                     <button 
                         onClick={onClose}
-                        className="flex-1 px-4 py-2 rounded-xl bg-[#222] hover:bg-[#333] transition-colors text-xs font-bold uppercase text-gray-400"
+                        className="flex-1 px-4 py-2 rounded-lg bg-[#222] hover:bg-[#333] transition-colors text-xs font-bold uppercase text-gray-400 cursor-pointer"
                     >
                         Cancelar
                     </button>
                     <button 
                         onClick={onConfirm}
-                        className="flex-1 px-4 py-2 rounded-xl bg-red-500 hover:bg-red-600 transition-colors text-xs font-bold uppercase text-white flex items-center justify-center gap-2"
+                        className="flex-1 px-4 py-2.5 rounded-lg bg-red-500 hover:bg-red-600 transition-colors text-xs font-bold uppercase text-white flex items-center justify-center gap-2 cursor-pointer"
                     >
-                        <LuTrash2 size={14} /> Eliminar
+                        Eliminar
                     </button>
                 </div>
             </div>

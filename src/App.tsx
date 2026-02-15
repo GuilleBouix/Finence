@@ -4,13 +4,10 @@ import Home from './pages/Home'
 import History from './pages/History'
 import Options from './pages/Options'
 import ProtectedRoute from './layouts/ProtectedRoute'
-
 import { TitleUpdater } from './components/TitleUpdater'
 
-/**
- * Componente principal de la aplicación
- * Define todas las rutas disponibles y qué componentes se renderizan en cada una
- */
+
+// Componente principal de la aplicación. Define todas las rutas disponibles y qué componentes se renderizan en cada una
 function App() {
   return (
     // BrowserRouter envuelve toda la aplicación para habilitar el sistema de rutas

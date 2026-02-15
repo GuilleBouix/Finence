@@ -9,7 +9,6 @@ import { ActivityList } from '../components/ActivityList'
 import { TrendChart } from '../components/TrendChart'
 import { DashboardSkeleton } from '../components/Skeleton'
 
-
 // Componente de la página principal (Dashboard)
 export default function Home() {
     // Estado para almacenar los datos del usuario autenticado
@@ -32,9 +31,7 @@ export default function Home() {
     // Obtenemos los totales calculados (ingresos, gastos, balance)
     const totales = obtenerTotales()
 
-
     // Effect que se ejecuta al montar el componente. Obtiene el usuario actual y carga sus datos de finanzas
-
     useEffect(() => {
         // Obtenemos el usuario actualmente autenticado
         supabase.auth.getUser().then(({ data }) => {
@@ -48,7 +45,6 @@ export default function Home() {
         })
         // Esta dependencia asegura que si obtenerDatos cambia, se re-ejecuta el effect
     }, [obtenerDatos])
-
 
     // Maneja la adición de un nuevo movimiento (ingreso o gasto). Esta función se pasa al TransactionForm para que el usuario pueda agregar transacciones
     const manejarNuevoMovimiento = async (tipo: 'ingresos' | 'gastos', monto: string, descripcion: string) => {
