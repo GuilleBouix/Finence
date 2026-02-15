@@ -1,4 +1,4 @@
-<img width="2334" height="664" alt="FINENCE" src="https://github.com/user-attachments/assets/5ed2d96f-e42e-4b7d-b68a-d961166bed1e" />
+<img width="2334" height="664" alt="550028003-5ed2d96f-e42e-4b7d-b68a-d961166bed1e" src="https://github.com/user-attachments/assets/5a2b7784-8c88-4da9-a717-2e866d270680" />
 
 # Finence - Control de Transacciones
 
