@@ -4,13 +4,16 @@ import { LuTrash2, LuHistory, LuPencil, LuArrowUp, LuArrowDown } from "react-ico
 import { useEffect, useState } from 'react';
 import { supabase } from '../services/supabaseClient';
 import type { User } from '@supabase/supabase-js';
-
+import EditTransactionModal from '../components/EditTransactionModal';
+import ConfirmDeleteModal from '../components/ConfirmDeleteModal';
 
 // Componente de la página de Historial. Muestra todas las transacciones ordenadas por fecha
 export default function History() {
     // Estado para almacenar el usuario actual
     const [usuario, setUsuario] = useState<User | null>(null);
-    
+    const [transaccionAEditar, setTransaccionAEditar] = useState<any | null>(null);
+    const [transaccionAEliminar, setTransaccionAEliminar] = useState<any | null>(null);
+   
     // Extraemos los datos y acciones de la store de Zustand
     const { 
         // Datos de ingresos y gastos
@@ -54,13 +57,10 @@ export default function History() {
     }, [obtenerDatos]);
 
     // Maneja la eliminación de un movimiento
-    const manejarEliminar = async (tipo: 'ingresos' | 'gastos', id: string) => {
-        // Pedimos confirmación al usuario antes de eliminar
-        if (confirm('¿Estás seguro de eliminar este registro?')) {
-            // Verificamos que el usuario existe antes de llamar a eliminar
-            if (usuario) {
-                await eliminarMovimiento(tipo, id, usuario.id);
-            }
+    const confirmarBorrado = async () => {
+        if (transaccionAEliminar && usuario) {
+            await eliminarMovimiento(transaccionAEliminar.tipo, transaccionAEliminar.id, usuario.id);
+            setTransaccionAEliminar(null);
         }
     };
 
@@ -114,14 +114,14 @@ export default function History() {
                                 <div className="flex gap-2  transition-opacity">
                                     {/* Botón de editar (pendiente de implementar) */}
                                     <button 
-                                        onClick={() => {/* Aquí iría tu lógica de abrir un modal para editar */}}
+                                        onClick={() => setTransaccionAEditar(transaccion)}
                                         className="p-2 hover:bg-blue-500/10 rounded-lg text-gray-500 hover:text-blue-500 transition-colors cursor-pointer"
                                     >
                                         <LuPencil size={16} />
                                     </button>
                                     {/* Botón de eliminar */}
                                     <button 
-                                        onClick={() => manejarEliminar(transaccion.tipo, transaccion.id)}
+                                        onClick={() => setTransaccionAEliminar(transaccion)}
                                         className="p-2 hover:bg-red-500/10 rounded-lg text-gray-500 hover:text-red-500 transition-colors cursor-pointer"
                                     >
                                         <LuTrash2 size={16} />
@@ -139,6 +139,22 @@ export default function History() {
                     )}
                 </div>
             </div>
+            
+            {/* MODAL DE EDICIÓN */}
+            {usuario && (
+                <EditTransactionModal 
+                    transaction={transaccionAEditar} 
+                    userId={usuario.id}
+                    onClose={() => setTransaccionAEditar(null)} 
+                />
+            )}
+
+            {/* MODAL DE CONFIRMACIÓN DE ELIMINACIÓN */}
+            <ConfirmDeleteModal 
+                transaction={transaccionAEliminar}
+                onConfirm={confirmarBorrado}
+                onClose={() => setTransaccionAEliminar(null)}
+            />
         </div>
     );
 }

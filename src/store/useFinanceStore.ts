@@ -1,19 +1,14 @@
-import { create } from 'zustand' // Create es la función de Zustand para crear stores de estado global
-import { supabase } from '../services/supabaseClient' // Importamos el cliente de Supabase
-import type { Movimiento, Totales } from '../types/finance' // Importamos los tipos TypeScript definidos
+import { create } from 'zustand'
+import { supabase } from '../services/supabaseClient'
+import type { Movimiento, Totales } from '../types/finance'
 
-/**
- * Interface que define la estructura del estado de la store de finanzas
- * Incluye tanto los datos (estado) como las acciones (funciones)
- */
+// Interface que define la estructura del estado de la store de finanzas
 interface FinanceState {
     ingresos: Movimiento[] // Lista de ingresos del usuario actual
     gastos: Movimiento[] // Lista de gastos del usuario actual
     cargando: boolean // Indica si hay una operación en curso (agregar/eliminar/actualizar)
     cargandoInicial: boolean // Indica si es la primera carga de datos (para mostrar skeleton)
     
-    // ACCIONES (métodos para modificar el estado)
-
     // Obtiene los movimientos de ingresos y gastos desde Supabase para un usuario
     obtenerDatos: (userId: string) => Promise<void>
     
@@ -30,10 +25,7 @@ interface FinanceState {
     actualizarMovimiento: (tipo: 'ingresos' | 'gastos', id: string, data: Partial<Movimiento>, userId: string) => Promise<void>
 }
 
-/**
- * Store de Zustand para gestionar el estado de las finanzas personales
- * Esta store es accesible desde cualquier componente de la aplicación
- */
+// Store de Zustand para gestionar el estado de las finanzas personales. Esta store es accesible desde cualquier componente de la aplicación
 export const useFinanceStore = create<FinanceState>((set, get) => ({
     // Estado inicial: arrays vacíos y indicadores de carga
     ingresos: [],
