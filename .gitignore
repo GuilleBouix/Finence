@@ -10,6 +10,7 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+AGENTS.md
 
 # Archivos de entorno
 .env
