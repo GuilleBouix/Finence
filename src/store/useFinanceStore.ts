@@ -1,20 +1,21 @@
 import { create } from 'zustand'
-import { supabase } from '../services/supabaseClient'
+import { supabase } from '../lib/supabaseClient'
 import type { Movimiento, Totales } from '../types/finance'
+import type { User } from '@supabase/supabase-js' // Importamos el tipo User de Supabase
 
 // Interface que define la estructura del estado de la store de finanzas
 interface FinanceState {
+    usuario: User | null
     ingresos: Movimiento[] // Lista de ingresos del usuario actual
     gastos: Movimiento[] // Lista de gastos del usuario actual
     cargando: boolean // Indica si hay una operación en curso (agregar/eliminar/actualizar)
     cargandoInicial: boolean // Indica si es la primera carga de datos (para mostrar skeleton)
     datosCargados: boolean // Bandera para el sistema de caché
 
-    /**
-     * Obtiene los movimientos desde Supabase.
-     * @param userId - ID del usuario.
-     * @param forzarRefresco - Si es true, ignora la caché y consulta a la DB.
-     */
+    // Función para actualizar el usuario actual en la store
+    setUsuario: (user: User | null) => void
+
+    // Obtiene los movimientos desde Supabase.
     obtenerDatos: (userId: string, forzarRefresco?: boolean) => Promise<void>
     
     // Agrega un nuevo movimiento (ingreso o gasto) a la base de datos
@@ -35,11 +36,14 @@ interface FinanceState {
 
 export const useFinanceStore = create<FinanceState>((set, get) => ({
     // Estado inicial
+    usuario: null,
     ingresos: [],
     gastos: [],
     cargando: false,
     cargandoInicial: true,
     datosCargados: false,
+
+    setUsuario: (user) => set({ usuario: user }),
 
     /**
      * Obtiene los datos de ingresos y gastos con sistema de caché.

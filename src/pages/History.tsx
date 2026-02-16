@@ -2,7 +2,7 @@ import { useFinanceStore } from '../store/useFinanceStore';
 import { Header } from "../components/Header";
 import { LuTrash2, LuHistory, LuPencil, LuArrowUp, LuArrowDown } from "react-icons/lu";
 import { useEffect, useState } from 'react';
-import { supabase } from '../services/supabaseClient';
+import { supabase } from '../lib/supabaseClient';
 import type { User } from '@supabase/supabase-js';
 import EditTransactionModal from '../components/EditTransactionModal';
 import ConfirmDeleteModal from '../components/ConfirmDeleteModal';

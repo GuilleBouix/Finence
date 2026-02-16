@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { supabase } from '../services/supabaseClient'
+import { supabase } from '../lib/supabaseClient'
 import { useNavigate } from 'react-router-dom'
 import { FcGoogle } from "react-icons/fc";
 import { LuLock, LuMail } from "react-icons/lu";

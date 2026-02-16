@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { supabase } from '../services/supabaseClient'
+import { useEffect, useState, useMemo } from 'react'
+import { supabase } from '../lib/supabaseClient'
 import type { User } from '@supabase/supabase-js'
 import { useFinanceStore } from '../store/useFinanceStore'
 import { Header } from '../components/Header'
@@ -25,27 +25,34 @@ export default function Home() {
         // Acciones de la store
         obtenerDatos, 
         agregarMovimiento, 
-        obtenerTotales 
     } = useFinanceStore()
 
     // Obtenemos los totales calculados (ingresos, gastos, balance)
-    const totales = obtenerTotales()
+    const totales = useMemo(() => {
+        const totalIngresos = ingresos.reduce((acc, mov) => acc + mov.monto, 0);
+        const totalGastos = gastos.reduce((acc, mov) => acc + mov.monto, 0);
+        return {
+            ingresos: totalIngresos,
+            gastos: totalGastos,
+            balance: totalIngresos - totalGastos
+        };
+    }, [ingresos, gastos]);    
 
     // Effect que se ejecuta al montar el componente. Obtiene el usuario actual y carga sus datos de finanzas
     useEffect(() => {
-        // Obtenemos el usuario actualmente autenticado
-        supabase.auth.getUser().then(({ data }) => {
-            // Si hay un usuario autenticado
-            if (data.user) {
-                // Guardamos el usuario en el estado local
-                setUsuario(data.user)
-                // Cargamos los datos de finanzas de este usuario desde Supabase
-                obtenerDatos(data.user.id)
+        const cargarSesion = async () => {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                setUsuario(user);
+                // IMPORTANTE: forzarRefresco = true solo la primera vez para asegurar
+                // que si la caché quedó "sucia" con arrays vacíos, se limpie.
+                await obtenerDatos(user.id, true);
             }
-        })
-        // Esta dependencia asegura que si obtenerDatos cambia, se re-ejecuta el effect
-    }, [obtenerDatos])
+        };
 
+        cargarSesion();
+    }, []); // Quitamos obtenerDatos de aquí para evitar bucles si no es necesario
+    
     // Maneja la adición de un nuevo movimiento (ingreso o gasto). Esta función se pasa al TransactionForm para que el usuario pueda agregar transacciones
     const manejarNuevoMovimiento = async (tipo: 'ingresos' | 'gastos', monto: string, descripcion: string) => {
         // Si no hay usuario, no podemos agregar el movimiento
@@ -89,6 +96,7 @@ export default function Home() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 animate-fade animate-delay-300">
                         {/* Lista de los 10 movimientos más recientes */}
                         <ActivityList ingresos={ingresos} gastos={gastos} />
+                        
                         {/* Gráfico de área con la tendencia de ingresos vs gastos */}
                         <TrendChart ingresos={ingresos} gastos={gastos} />
                     </div>

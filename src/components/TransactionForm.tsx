@@ -45,7 +45,7 @@ export const TransactionForm = ({ onAdd, cargando }: { onAdd: FuncionAgregarMovi
                     {/* Input de descripción (texto) */}
                     <input 
                         type="text" 
-                        placeholder="Descripción" 
+                        placeholder="Descripción de la transacción" 
                         value={descripcion} 
                         onChange={e => setDescripcion(e.target.value)}
                         className="flex-2 bg-[#0a0a0a] border border-[#222] p-2 rounded-lg outline-none focus:border-[#22c55e] transition-all text-gray-300" 

@@ -1,12 +1,15 @@
 import { LuLogOut, LuHistory, LuSettings } from "react-icons/lu";
-import { supabase } from '../services/supabaseClient'
+import { supabase } from '../lib/supabaseClient'
 import { useNavigate, Link } from 'react-router-dom'
+import { useFinanceStore } from "../store/useFinanceStore";
 
 // Componente Header. Muestra el logo, navegación entre páginas y botón de cierre de sesión
 export const Header = () => {
     // Hook para navegar a otras rutas
     const navigate = useNavigate()
     
+    const { usuario } = useFinanceStore();
+
     // Cierra la sesión del usuario actual. Llama a Supabase auth signOut y redirige al login
     const cerrarSesion = async () => {
         // Cerramos la sesión en Supabase
@@ -48,6 +51,20 @@ export const Header = () => {
                         <LuSettings size={16} />
                         <span className="hidden sm:inline">OPCIONES</span>
                     </Link>
+
+                    <div className="group flex items-center cursor-default hover:bg-[#222] rounded-full transition-all duration-300 ease-in-out">
+                        <img src={usuario?.user_metadata?.avatar_url || '/default-avatar.jpg'} className="w-6 h-6 rounded-full object-cover z-10 border border-[#333]" />
+
+                        <span className="
+                            text-xs font-mono text-[#22c55e]
+                            max-w-0 overflow-hidden opacity-0 whitespace-nowrap
+                            -translate-x-2
+                            transition-all duration-300 ease-in-out
+                            group-hover:max-w-xs group-hover:opacity-100 group-hover:translate-x-0 group-hover:ml-2 group-hover:mr-2
+                        ">
+                            {usuario?.email}
+                        </span>
+                    </div>
                 </nav>
 
                 {/* Botón de cierre de sesión */}
