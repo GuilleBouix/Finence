@@ -1,17 +1,17 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { useEffect } from 'react'
-import { supabase } from './lib/supabaseClient'
-import Login from './pages/Login'
-import Home from './pages/Home'
-import History from './pages/History'
-import Options from './pages/Options'
-import ProtectedRoute from './routes/ProtectedRoute'
-import { TitleUpdater } from './components/TitleUpdater'
-import { useFinanceStore } from './store/useFinanceStore'; // Importa tu store
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { supabase } from "./lib/supabaseClient";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
+import History from "./pages/History";
+import Options from "./pages/Options";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import { TitleUpdater } from "./components/TitleUpdater";
+import { useFinanceStore } from "./store/useFinanceStore"; // Importa tu store
 
 // Componente principal de la aplicación. Define todas las rutas disponibles y qué componentes se renderizan en cada una
 function App() {
-// Extraemos la acción de la store
+  // Extraemos la acción de la store
   const setUsuario = useFinanceStore((state) => state.setUsuario);
 
   useEffect(() => {
@@ -21,11 +21,13 @@ function App() {
     });
 
     // 2. Suscribirse a cambios (Login, Logout, Token renovado)
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setUsuario(session?.user ?? null);
-      
+
       // Tip: Si el evento es SIGN_OUT, podrías limpiar también los datos
-      if (_event === 'SIGNED_OUT') {
+      if (_event === "SIGNED_OUT") {
         // Aquí podrías resetear ingresos/gastos si quisieras
       }
     });
@@ -38,12 +40,12 @@ function App() {
     <BrowserRouter>
       {/* TitleUpdater se ejecuta en cada cambio de ruta para actualizar el título */}
       <TitleUpdater />
-      
+
       <Routes>
         <Route path="/auth" element={<Login />} />
 
-        <Route 
-          path="/" 
+        <Route
+          path="/"
           element={
             <ProtectedRoute>
               <Home />
@@ -51,21 +53,26 @@ function App() {
           }
         />
 
-        <Route path="/historial" element={
-          <ProtectedRoute>
-            <History />
-          </ProtectedRoute>
-        } />
+        <Route
+          path="/historial"
+          element={
+            <ProtectedRoute>
+              <History />
+            </ProtectedRoute>
+          }
+        />
 
-        <Route path="/opciones" element={
-          <ProtectedRoute>
-            <Options />
-          </ProtectedRoute>
-        }  
+        <Route
+          path="/opciones"
+          element={
+            <ProtectedRoute>
+              <Options />
+            </ProtectedRoute>
+          }
         />
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -3,8 +3,8 @@
 
 /* 1. Definimos la fuente local */
 @font-face {
-  font-family: 'Geist';
-  src: url('./assets/fonts/Geist-VariableFont_wght.ttf') format('truetype');
+  font-family: "Geist";
+  src: url("./assets/fonts/Geist-VariableFont_wght.ttf") format("truetype");
   font-weight: 100 900; /* Rango para fuentes variables */
   font-style: normal;
   font-display: swap;
@@ -13,8 +13,9 @@
 /* 2. Configuramos las variables de tema para Tailwind 4 */
 :root {
   --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, monospace; /* Por si luego añades la Mono */
-  
+  --font-mono:
+    "Geist Mono", ui-monospace, monospace; /* Por si luego añades la Mono */
+
   /* Puedes ajustar colores o sombras aquí también si quieres */
   --color-brand-green: #22c55e;
   --color-brand-red: #ef4444;
