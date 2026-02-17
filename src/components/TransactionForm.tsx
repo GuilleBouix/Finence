@@ -4,13 +4,13 @@ import {
   LuTrendingUp,
   LuTrendingDown,
 } from "react-icons/lu";
+
 type FuncionAgregarMovimiento = (
   tipo: "ingresos" | "gastos",
   monto: string,
   descripcion: string,
 ) => Promise<boolean>;
 
-// Componente de formulario para agregar nuevas transacciones
 export const TransactionForm = ({
   onAdd,
   cargando,
@@ -24,7 +24,8 @@ export const TransactionForm = ({
   // Estado para el campo de descripción
   const [descripcion, setDescripcion] = useState("");
 
-  // Maneja el envío del formulario. Tipo de transacción: 'ingresos' o 'gastos'
+  // Maneja el envío del formulario
+  // Tipo de transacción: 'ingresos' o 'gastos'
   const handleSubmit = async (tipo: "ingresos" | "gastos") => {
     // Llamamos a la función proporcionada por el componente padre (Home)
     const exitoso = await onAdd(tipo, monto, descripcion);
@@ -51,6 +52,7 @@ export const TransactionForm = ({
             type="number"
             placeholder="0.00"
             value={monto}
+            required
             onChange={(e) => setMonto(e.target.value)}
             className="flex-1 bg-[#0a0a0a] border border-[#222] p-2 rounded-lg outline-none focus:border-[#22c55e] transition-all font-mono"
           />
@@ -60,6 +62,7 @@ export const TransactionForm = ({
             type="text"
             placeholder="Descripción de la transacción"
             value={descripcion}
+            required
             onChange={(e) => setDescripcion(e.target.value)}
             className="flex-2 bg-[#0a0a0a] border border-[#222] p-2 rounded-lg outline-none focus:border-[#22c55e] transition-all text-gray-300"
           />

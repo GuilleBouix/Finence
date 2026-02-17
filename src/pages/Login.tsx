@@ -3,98 +3,69 @@ import { supabase } from "../lib/supabaseClient";
 import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { LuLock, LuMail } from "react-icons/lu";
+import toast from "react-hot-toast";
 
-// Componente de página de login. Permite al usuario autenticarse con email/password o Google OAuth
 export default function Login() {
-  // Hook para navegar a otras rutas después del login exitoso
   const navigate = useNavigate();
 
-  // Estado para indicar si la operación de login está en proceso
+  // Estado para indicar si está procesando el login
   const [cargando, setCargando] = useState(false);
 
-  // Estado para el campo de correo electrónico
+  // Estado para el campo de correo
   const [correo, setCorreo] = useState("");
 
   // Estado para el campo de contraseña
   const [password, setPassword] = useState("");
 
-  // Estado para mostrar mensajes de error o éxito al usuario
-  const [mensaje, setMensaje] = useState({ texto: "", tipo: "" });
-
-  // Maneja el envío del formulario de login con email y contraseña
+  // Maneja el login con email y contraseña
   const manejarLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    // Prevenimos el comportamiento por defecto del formulario (recarga de página)
     e.preventDefault();
-
-    // Activamos el indicador de carga
     setCargando(true);
 
-    // Limpiamos cualquier mensaje anterior
-    setMensaje({ texto: "", tipo: "" });
-
-    // Intentamos iniciar sesión con Supabase usando email y contraseña
     const { error } = await supabase.auth.signInWithPassword({
       email: correo,
       password: password,
     });
 
-    // Si hay un error (credenciales incorrectas, usuario no existe, etc.)
     if (error) {
-      // Mostramos el mensaje de error al usuario
-      setMensaje({ texto: error.message, tipo: "error" });
+      if (error.message === "Invalid login credentials") {
+        toast.error("Correo o contraseña incorrectos.");
+      } else {
+        toast.error(error.message);
+      }
     } else {
-      // Si el login fue exitoso, redirigimos al dashboard
       navigate("/");
     }
 
-    // Desactivamos el indicador de carga
     setCargando(false);
   };
 
-  // Maneja el login con Google OAuth. Redirige a Google para la autenticación y luego vuelve a la app
+  // Maneja el login con Google OAuth
   const manejarLoginGoogle = async () => {
-    // Iniciamos flujo OAuth con Google
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        // URL a la que Google redirigirá después de la autenticación
         redirectTo: window.location.origin + "/",
       },
     });
 
-    // Si hay error en el proceso OAuth, lo mostramos
-    if (error) setMensaje({ texto: error.message, tipo: "error" });
+    if (error) toast.error("Error al conectar con Google: " + error.message);
   };
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center p-4 font-sans antialiased">
-      <div
-        className="w-full max-w-85 bg-[#111] border border-[#222] p-6 rounded-2xl shadow-2xl
-            animate-fade-in"
-      >
-        {/* Encabezado del formulario de login */}
-        <div
-          className="text-center mb-6
-                animate-fade-down"
-        >
+      <div className="w-full max-w-85 bg-[#111] border border-[#222] p-6 rounded-2xl shadow-2xl animate-fade-in">
+        {/* Título de bienvenida */}
+        <div className="text-center mb-6 animate-fade-down">
           <h2 className="text-2xl font-bold tracking-tight">Bienvenido</h2>
           <p className="text-xs text-gray-500 uppercase mt-1">
             Ingresa a tu cuenta
           </p>
         </div>
 
-        {/* Formulario de login con email y contraseña */}
+        {/* Formulario de login */}
         <form onSubmit={manejarLogin} className="flex flex-col gap-3">
-          {/* Mensaje de error o éxito */}
-          {mensaje.texto && (
-            <div
-              className={`text-xs p-2 rounded-lg border animate-fade ${mensaje.tipo === "error" ? "bg-red-500/10 border-red-500/20 text-red-500" : "bg-[#22c55e]/10 border-[#22c55e]/20 text-[#22c55e]"}`}
-            >
-              {mensaje.texto}
-            </div>
-          )}
-
-          {/* Campo de correo electrónico */}
+          {/* Campo de correo */}
           <div className="relative group animate-fade-down animate-delay-50">
             <LuMail
               className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-600 group-focus-within:text-[#22c55e] transition-colors"
@@ -126,7 +97,7 @@ export default function Login() {
             />
           </div>
 
-          {/* Botón de submit del formulario */}
+          {/* Botón de submit */}
           <button
             type="submit"
             disabled={cargando}
@@ -140,7 +111,7 @@ export default function Login() {
           </button>
         </form>
 
-        {/* Separador visual entre login normal y OAuth */}
+        {/* Separador visual */}
         <div className="relative my-6 animate-fade-down animate-delay-200">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-[#222]"></div>
@@ -150,12 +121,11 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Botón de login con Google OAuth */}
+        {/* Botón de login con Google */}
         <button
           onClick={manejarLoginGoogle}
           type="button"
-          className="w-full py-2.5 border border-[#222] rounded flex items-center justify-center gap-2 hover:bg-[#1a1a1a] transition-all text-sm font-medium text-gray-300 cursor-pointer active:scale-95 shadow-sm
-                    animate-fade-down animate-delay-250"
+          className="w-full py-2.5 border border-[#222] rounded flex items-center justify-center gap-2 hover:bg-[#1a1a1a] transition-all text-sm font-medium text-gray-300 cursor-pointer active:scale-95 shadow-sm animate-fade-down animate-delay-250"
         >
           <FcGoogle size={18} />
           Ingresar con Google

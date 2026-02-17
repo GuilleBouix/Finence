@@ -6,20 +6,25 @@ import {
   LuPencil,
   LuArrowUp,
   LuArrowDown,
+  LuInfo,
 } from "react-icons/lu";
 import { useEffect, useState } from "react";
 import { supabase } from "../lib/supabaseClient";
 import type { User } from "@supabase/supabase-js";
 import EditTransactionModal from "../components/EditTransactionModal";
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
+import toast from "react-hot-toast";
 
-// Componente de la página de Historial. Muestra todas las transacciones ordenadas por fecha
 export default function History() {
   // Estado para almacenar el usuario actual
   const [usuario, setUsuario] = useState<User | null>(null);
+
+  // Estado para la transacción que se está editando
   const [transaccionAEditar, setTransaccionAEditar] = useState<any | null>(
     null,
   );
+
+  // Estado para la transacción que se está eliminando
   const [transaccionAEliminar, setTransaccionAEliminar] = useState<any | null>(
     null,
   );
@@ -37,9 +42,9 @@ export default function History() {
     obtenerDatos,
   } = useFinanceStore();
 
-  // Combinamos ingresos y gastos en un solo array. Añadimos una propiedad 'tipo' a cada movimiento para identificar su
+  // Combinamos ingresos y gastos en un solo array
+  // Convertimos cada ingreso a un objeto con propiedad 'tipo'
   const todasLasTransacciones = [
-    // Convertimos cada ingreso a un objeto con propiedad 'tipo'
     ...ingresos.map((ingresoActual) => ({
       ...ingresoActual,
       tipo: "ingresos" as const,
@@ -51,7 +56,6 @@ export default function History() {
       tipo: "gastos" as const,
     })),
   ]
-
     // Ordenamos por fecha de forma descendente (la más reciente primero)
     .sort((transaccionA, transaccionB) => {
       return (
@@ -77,12 +81,17 @@ export default function History() {
   // Maneja la eliminación de un movimiento
   const confirmarBorrado = async () => {
     if (transaccionAEliminar && usuario) {
-      await eliminarMovimiento(
-        transaccionAEliminar.tipo,
-        transaccionAEliminar.id,
-        usuario.id,
-      );
-      setTransaccionAEliminar(null);
+      try {
+        await eliminarMovimiento(
+          transaccionAEliminar.tipo,
+          transaccionAEliminar.id,
+          usuario.id,
+        );
+        toast.success("Transacción eliminada correctamente");
+        setTransaccionAEliminar(null);
+      } catch (error) {
+        toast.error("No se pudo eliminar la transacción");
+      }
     }
   };
 
@@ -132,10 +141,12 @@ export default function History() {
                   </div>
                 </div>
 
+                {/* Descripción y fecha */}
                 <div>
                   <p className="font-medium text-gray-200">
                     {transaccion.descripcion}
                   </p>
+
                   {/* Fecha formateada en español */}
                   <p className="text-xs text-gray-500 uppercase">
                     {new Date(transaccion.fecha).toLocaleDateString("es-ES", {
@@ -159,13 +170,14 @@ export default function History() {
 
                 {/* Botones de editar y eliminar */}
                 <div className="flex gap-2  transition-opacity">
-                  {/* Botón de editar (pendiente de implementar) */}
+                  {/* Botón de editar */}
                   <button
                     onClick={() => setTransaccionAEditar(transaccion)}
                     className="p-2 hover:bg-blue-500/10 rounded-lg text-gray-500 hover:text-blue-500 transition-colors cursor-pointer"
                   >
                     <LuPencil size={16} />
                   </button>
+
                   {/* Botón de eliminar */}
                   <button
                     onClick={() => setTransaccionAEliminar(transaccion)}
@@ -184,9 +196,12 @@ export default function History() {
               className="py-20 text-center border-2 border-dashed border-[#111] rounded-2xl
                         animate-fade animate-delay-100"
             >
-              <p className="text-gray-600 text-sm italic">
-                No hay movimientos registrados aún.
-              </p>
+              <div className="h-full flex flex-col items-center justify-center gap-2 animate-fade pb-8">
+                <LuInfo className="text-[#222] size-8" />
+                <p className="text-gray-600 text-[10px] font-bold uppercase tracking-widest text-center">
+                  Aún no tienes movimientos
+                </p>
+              </div>
             </div>
           )}
         </div>

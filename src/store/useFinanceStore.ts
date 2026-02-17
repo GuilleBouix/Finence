@@ -1,21 +1,36 @@
+// Store de Zustand para gestionar el estado global de las finanzas
 import { create } from "zustand";
+
 import { supabase } from "../lib/supabaseClient";
+
 import type { Movimiento, Totales } from "../types/finance";
-import type { User } from "@supabase/supabase-js"; // Importamos el tipo User de Supabase
+
+import type { User } from "@supabase/supabase-js";
 
 // Interface que define la estructura del estado de la store de finanzas
 interface FinanceState {
+  // Usuario actualmente autenticado
   usuario: User | null;
-  ingresos: Movimiento[]; // Lista de ingresos del usuario actual
-  gastos: Movimiento[]; // Lista de gastos del usuario actual
-  cargando: boolean; // Indica si hay una operación en curso (agregar/eliminar/actualizar)
-  cargandoInicial: boolean; // Indica si es la primera carga de datos (para mostrar skeleton)
-  datosCargados: boolean; // Bandera para el sistema de caché
+  
+  // Lista de ingresos del usuario actual
+  ingresos: Movimiento[];
+  
+  // Lista de gastos del usuario actual
+  gastos: Movimiento[];
+  
+  // Indica si hay una operación en curso (agregar/eliminar/actualizar)
+  cargando: boolean;
+  
+  // Indica si es la primera carga de datos (para mostrar skeleton)
+  cargandoInicial: boolean;
+  
+  // Bandera para el sistema de caché
+  datosCargados: boolean;
 
   // Función para actualizar el usuario actual en la store
   setUsuario: (user: User | null) => void;
 
-  // Obtiene los movimientos desde Supabase.
+  // Obtiene los movimientos desde Supabase
   obtenerDatos: (userId: string, forzarRefresco?: boolean) => Promise<void>;
 
   // Agrega un nuevo movimiento (ingreso o gasto) a la base de datos
@@ -34,10 +49,7 @@ interface FinanceState {
     userId: string,
   ) => Promise<void>;
 
-  /**
-   * Actualiza un movimiento. Soporta cambio de tipo (mover entre tablas).
-   * @param data - Incluye los campos a actualizar y opcionalmente 'tipoNuevo'
-   */
+  // Actualiza un movimiento. Soporta cambio de tipo (mover entre tablas)
   actualizarMovimiento: (
     tipoOriginal: "ingresos" | "gastos",
     id: string,
@@ -57,15 +69,13 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
 
   setUsuario: (user) => set({ usuario: user }),
 
-  /**
-   * Obtiene los datos de ingresos y gastos con sistema de caché.
-   */
+  // Obtiene los datos de ingresos y gastos con sistema de caché
   obtenerDatos: async (userId: string, forzarRefresco = false) => {
-    // --- LÓGICA DE CACHÉ ---
     // Si los datos ya existen y no se requiere un refresco forzado, evitamos la consulta
     if (get().datosCargados && !forzarRefresco) return;
 
     const estadoActual = get();
+    
     // Solo mostramos cargandoInicial si no tenemos nada en memoria
     if (
       estadoActual.ingresos.length === 0 &&
@@ -93,7 +103,7 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
         ingresos: inc || [],
         gastos: gas || [],
         cargandoInicial: false,
-        datosCargados: true, // Marcamos que la caché está llena
+        datosCargados: true,
       });
     } catch (error) {
       console.error("Error al obtener datos:", error);
@@ -101,9 +111,7 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
     }
   },
 
-  /**
-   * Agrega un movimiento e invalida la caché para forzar refresco.
-   */
+  // Agrega un movimiento e invalida la caché para forzar refresco
   agregarMovimiento: async (tipo, payload) => {
     set({ cargando: true });
     const { error } = await supabase.from(tipo).insert(payload);
@@ -119,9 +127,7 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
     return false;
   },
 
-  /**
-   * Calcula totales basados en el estado actual de la store (memoria).
-   */
+  // Calcula totales basados en el estado actual de la store (memoria)
   obtenerTotales: () => {
     const { ingresos, gastos } = get();
 
@@ -135,9 +141,7 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
     };
   },
 
-  /**
-   * Elimina un registro e invalida la caché.
-   */
+  // Elimina un registro e invalida la caché
   eliminarMovimiento: async (tipo, id, userId) => {
     const { error } = await supabase.from(tipo).delete().eq("id", id);
     if (!error) {
@@ -146,23 +150,21 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
     }
   },
 
-  /**
-   * Actualiza un movimiento. Si el tipo cambia, mueve el registro entre tablas.
-   */
+  // Actualiza un movimiento. Si el tipo cambia, mueve el registro entre tablas
   actualizarMovimiento: async (tipoOriginal, id, data, userId) => {
     const { tipoNuevo, ...datosAActualizar } = data;
 
     try {
       // Caso 1: Cambio de tipo (ej. de Ingreso a Gasto)
       if (tipoNuevo && tipoNuevo !== tipoOriginal) {
-        // 1. Insertamos en la nueva tabla (mantenemos la fecha original)
+        // Insertamos en la nueva tabla (mantenemos la fecha original)
         const { error: insError } = await supabase.from(tipoNuevo).insert({
           ...datosAActualizar,
           user_id: userId,
         });
 
         if (!insError) {
-          // 2. Si se insertó bien, lo borramos de la tabla anterior
+          // Si se insertó bien, lo borramos de la tabla anterior
           await supabase.from(tipoOriginal).delete().eq("id", id);
         }
       }

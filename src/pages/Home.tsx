@@ -8,8 +8,8 @@ import { TransactionForm } from "../components/TransactionForm";
 import { ActivityList } from "../components/ActivityList";
 import { TrendChart } from "../components/TrendChart";
 import { DashboardSkeleton } from "../components/Skeleton";
+import toast from "react-hot-toast";
 
-// Componente de la página principal (Dashboard)
 export default function Home() {
   // Estado para almacenar los datos del usuario autenticado
   const [usuario, setUsuario] = useState<User | null>(null);
@@ -38,7 +38,8 @@ export default function Home() {
     };
   }, [ingresos, gastos]);
 
-  // Effect que se ejecuta al montar el componente. Obtiene el usuario actual y carga sus datos de finanzas
+  // Effect que se ejecuta al montar el componente
+  // Obtiene el usuario actual y carga sus datos de finanzas
   useEffect(() => {
     const cargarSesion = async () => {
       const {
@@ -46,39 +47,44 @@ export default function Home() {
       } = await supabase.auth.getUser();
       if (user) {
         setUsuario(user);
-        // IMPORTANTE: forzarRefresco = true solo la primera vez para asegurar
+
+        // forzarRefresco = true solo la primera vez para asegurar
         // que si la caché quedó "sucia" con arrays vacíos, se limpie.
         await obtenerDatos(user.id, true);
       }
     };
 
     cargarSesion();
-  }, []); // Quitamos obtenerDatos de aquí para evitar bucles si no es necesario
+  }, []);
 
-  // Maneja la adición de un nuevo movimiento (ingreso o gasto). Esta función se pasa al TransactionForm para que el usuario pueda agregar transacciones
+  // Maneja la adición de un nuevo movimiento (ingreso o gasto)
   const manejarNuevoMovimiento = async (
     tipo: "ingresos" | "gastos",
     monto: string,
     descripcion: string,
   ) => {
-    // Si no hay usuario, no podemos agregar el movimiento
     if (!usuario) return false;
 
-    // Obtenemos la fecha actual en formato ISO
     const fechaActual = new Date().toISOString();
 
-    // Llamamos a la acción de la store para agregar el movimiento
-    return await agregarMovimiento(tipo, {
-      // Convertimos el string del monto a número
+    const resultado = await agregarMovimiento(tipo, {
       monto: parseFloat(monto),
       descripcion,
-
-      // Fecha actual del movimiento
       fecha: fechaActual,
-
-      // ID del usuario que crea el movimiento
       user_id: usuario.id,
     });
+
+    if (resultado) {
+      toast.success(
+        tipo === "ingresos"
+          ? "Ingreso registrado con éxito"
+          : "Gasto registrado con éxito",
+      );
+    } else {
+      toast.error("Hubo un problema al guardar el movimiento");
+    }
+
+    return resultado;
   };
 
   return (

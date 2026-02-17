@@ -2,7 +2,7 @@ export const Skeleton = ({ className }: { className: string }) => (
   <div className={`bg-[#222] animate-pulse rounded-lg ${className}`}></div>
 );
 
-// Componente DashboardSkeleton. Muestra una versión esqueleto de todo el dashboard mientras cargan los datos
+// Muestra una versión esqueleto de todo el dashboard mientras cargan los datos
 export const DashboardSkeleton = () => (
   <div className="max-w-3xl mx-auto space-y-4">
     {/* Skeleton del Header (logo y navegación) */}
@@ -14,6 +14,7 @@ export const DashboardSkeleton = () => (
         {/* Placeholder del botón de logout */}
         <Skeleton className="h-3 w-24" />
       </div>
+
       {/* Placeholder de botones de navegación */}
       <Skeleton className="h-8 w-20" />
     </div>
