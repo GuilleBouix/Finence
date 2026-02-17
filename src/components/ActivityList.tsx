@@ -1,6 +1,7 @@
 import { LuClock, LuArrowUp, LuArrowDown, LuInfo } from "react-icons/lu";
 import type { Movimiento } from "../types/finance";
 
+// Componente de lista de actividad reciente
 export const ActivityList = ({
   ingresos,
   gastos,

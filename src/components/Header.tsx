@@ -4,6 +4,7 @@ import { supabase } from "../lib/supabaseClient";
 import { useNavigate, Link } from "react-router-dom";
 import { useFinanceStore } from "../store/useFinanceStore";
 
+// Componente Header (barra de navegacion superior)
 export const Header = () => {
   const navigate = useNavigate();
   const { usuario } = useFinanceStore();

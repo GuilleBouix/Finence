@@ -16,6 +16,7 @@ interface TrendChartProps {
   gastos: Movimiento[];
 }
 
+// Componente para mostrar la tendencia de ingresos y gastos a lo largo del tiempo
 export const TrendChart = ({ ingresos, gastos }: TrendChartProps) => {
   // Estado para alternar entre ver ingresos o gastos
   const [verIngresos, setVerIngresos] = useState(true);

@@ -5,6 +5,7 @@ import { FcGoogle } from "react-icons/fc";
 import { LuLock, LuMail } from "react-icons/lu";
 import toast from "react-hot-toast";
 
+// Página de login con email/password y Google OAuth
 export default function Login() {
   const navigate = useNavigate();
 

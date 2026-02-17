@@ -11,6 +11,7 @@ type FuncionAgregarMovimiento = (
   descripcion: string,
 ) => Promise<boolean>;
 
+// Componente para el formulario de transacciones (ingresos y gastos)
 export const TransactionForm = ({
   onAdd,
   cargando,

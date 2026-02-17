@@ -1,6 +1,7 @@
 import { LuTrendingUp, LuTrendingDown, LuScale } from "react-icons/lu";
 import type { Totales } from "../types/finance";
 
+// Componente de tarjetas resumen para mostrar ingresos, gastos y balance
 export const SummaryCards = ({ totales }: { totales: Totales }) => (
   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 animate-fade animate-delay-100">
     {/* Tarjeta de Ingresos: fondo verde oscuro, borde verde */}

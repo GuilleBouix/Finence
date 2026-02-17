@@ -6,6 +6,7 @@ interface ConfirmDeleteModalProps {
   onClose: () => void;
 }
 
+// Componente de modal para confirmar la eliminación de una transacción
 export default function ConfirmDeleteModal({
   transaction,
   onConfirm,

@@ -10,6 +10,7 @@ import { TrendChart } from "../components/TrendChart";
 import { DashboardSkeleton } from "../components/Skeleton";
 import toast from "react-hot-toast";
 
+// Página principal del dashboard de finanzas personales
 export default function Home() {
   // Estado para almacenar los datos del usuario autenticado
   const [usuario, setUsuario] = useState<User | null>(null);

@@ -9,6 +9,7 @@ const titulosPorRuta: Record<string, string> = {
   "/opciones": "FINENCE | Opciones",
 };
 
+// Componente que actualiza el título de la página según la ruta actual
 export const TitleUpdater = () => {
   // Obtenemos la ruta actual
   const location = useLocation();

@@ -9,6 +9,7 @@ interface EditTransactionModalProps {
   onClose: () => void;
 }
 
+// Componente para editar una transacción (ingreso o gasto)
 export default function EditTransactionModal({
   transaction,
   userId,

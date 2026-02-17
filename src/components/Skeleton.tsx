@@ -1,3 +1,4 @@
+// Componente de Skeleton para mostrar mientras se cargan los datos
 export const Skeleton = ({ className }: { className: string }) => (
   <div className={`bg-[#222] animate-pulse rounded-lg ${className}`}></div>
 );

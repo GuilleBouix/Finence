@@ -5,7 +5,7 @@ import { supabase } from "../lib/supabaseClient";
 import { useFinanceStore } from "../store/useFinanceStore";
 import toast from "react-hot-toast";
 
-function Options() {
+export default function Options() {
   const { usuario, setUsuario, obtenerDatos } = useFinanceStore();
 
   // Estado para la nueva URL del avatar
@@ -205,5 +205,3 @@ function Options() {
     </div>
   );
 }
-
-export default Options;

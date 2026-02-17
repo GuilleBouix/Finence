@@ -15,6 +15,7 @@ import EditTransactionModal from "../components/EditTransactionModal";
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
 import toast from "react-hot-toast";
 
+// Página de historial de transacciones, muestra una lista combinada de ingresos y gastos
 export default function History() {
   // Estado para almacenar el usuario actual
   const [usuario, setUsuario] = useState<User | null>(null);
