@@ -1,7 +1,10 @@
 import { useState, useEffect } from "react";
+
 import { useFinanceStore } from "../store/useFinanceStore";
+
 import { LuPencil } from "react-icons/lu";
-import toast from "react-hot-toast";
+
+import { toastService, mensajes } from "../services/toastService";
 
 interface EditTransactionModalProps {
   transaction: any | null;
@@ -46,12 +49,12 @@ export default function EditTransactionModal({
         userId,
       );
 
-      // Si todo sale bien, disparamos el éxito
-      toast.success("Transacción actualizada correctamente");
+      // Si todo sale bien, disparamos el exito
+      toastService.success(mensajes.transacciones.actualizado);
       onClose();
     } catch (error) {
       // Por si falla Supabase
-      toast.error("Error al actualizar la transacción");
+      toastService.error(mensajes.transacciones.errorActualizar);
       console.error(error);
     }
   };

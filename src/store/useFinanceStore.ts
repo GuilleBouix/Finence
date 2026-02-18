@@ -7,6 +7,8 @@ import type { Movimiento, Totales } from "../types/finance";
 
 import type { User } from "@supabase/supabase-js";
 
+import { TABLAS } from "../constants";
+
 // Interface que define la estructura del estado de la store de finanzas
 interface FinanceState {
   // Usuario actualmente autenticado
@@ -88,12 +90,12 @@ export const useFinanceStore = create<FinanceState>((set, get) => ({
       // Ejecutamos ambas consultas en paralelo para mejorar el rendimiento
       const [{ data: inc }, { data: gas }] = await Promise.all([
         supabase
-          .from("ingresos")
+          .from(TABLAS.ingresos)
           .select("*")
           .eq("user_id", userId)
           .order("fecha", { ascending: false }),
         supabase
-          .from("gastos")
+          .from(TABLAS.gastos)
           .select("*")
           .eq("user_id", userId)
           .order("fecha", { ascending: false }),

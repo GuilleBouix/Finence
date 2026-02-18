@@ -1,16 +1,14 @@
-import { useState } from "react";
-import { supabase } from "../lib/supabaseClient";
-import { useNavigate } from "react-router-dom";
-import { FcGoogle } from "react-icons/fc";
-import { LuLock, LuMail } from "react-icons/lu";
-import toast from "react-hot-toast";
-
 // Página de login con email/password y Google OAuth
-export default function Login() {
-  const navigate = useNavigate();
+import { useState } from "react";
 
-  // Estado para indicar si está procesando el login
-  const [cargando, setCargando] = useState(false);
+import { FcGoogle } from "react-icons/fc";
+
+import { LuLock, LuMail } from "react-icons/lu";
+
+import { useAuth } from "../hooks/useAuth";
+
+export default function Login() {
+  const { cargando, login, loginGoogle } = useAuth();
 
   // Estado para el campo de correo
   const [correo, setCorreo] = useState("");
@@ -21,36 +19,12 @@ export default function Login() {
   // Maneja el login con email y contraseña
   const manejarLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setCargando(true);
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email: correo,
-      password: password,
-    });
-
-    if (error) {
-      if (error.message === "Invalid login credentials") {
-        toast.error("Correo o contraseña incorrectos.");
-      } else {
-        toast.error(error.message);
-      }
-    } else {
-      navigate("/");
-    }
-
-    setCargando(false);
+    await login(correo, password);
   };
 
   // Maneja el login con Google OAuth
   const manejarLoginGoogle = async () => {
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: window.location.origin + "/",
-      },
-    });
-
-    if (error) toast.error("Error al conectar con Google: " + error.message);
+    await loginGoogle();
   };
 
   return (

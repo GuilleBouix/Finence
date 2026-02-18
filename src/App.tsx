@@ -1,27 +1,16 @@
-// Componente principal de la aplicación
-// Define todas las rutas disponibles y qué componentes se renderizan en cada una
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-
 import { useEffect } from "react";
-
 import { supabase } from "./lib/supabaseClient";
-
 import Login from "./pages/Login";
-
 import Home from "./pages/Home";
-
 import History from "./pages/History";
-
 import Options from "./pages/Options";
-
 import ProtectedRoute from "./routes/ProtectedRoute";
-
 import { TitleUpdater } from "./components/TitleUpdater";
-
 import { useFinanceStore } from "./store/useFinanceStore";
-
 import { Toaster } from "react-hot-toast";
 
+// Componente principal de la aplicación
 function App() {
   // Extraemos la acción de la store para actualizar el usuario
   const setUsuario = useFinanceStore((state) => state.setUsuario);
@@ -37,11 +26,6 @@ function App() {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setUsuario(session?.user ?? null);
-
-      // Si el evento es SIGN_OUT, podrías limpiar también los datos
-      if (_event === "SIGNED_OUT") {
-        // Aquí podrías resetear ingresos/gastos si quisieras
-      }
     });
 
     return () => subscription.unsubscribe();

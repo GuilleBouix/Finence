@@ -1,5 +1,8 @@
+// Página de historial de transacciones, muestra una lista combinada de ingresos y gastos
 import { useFinanceStore } from "../store/useFinanceStore";
+
 import { Header } from "../components/Header";
+
 import {
   LuTrash2,
   LuHistory,
@@ -8,17 +11,20 @@ import {
   LuArrowDown,
   LuInfo,
 } from "react-icons/lu";
-import { useEffect, useState } from "react";
-import { supabase } from "../lib/supabaseClient";
-import type { User } from "@supabase/supabase-js";
-import EditTransactionModal from "../components/EditTransactionModal";
-import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
-import toast from "react-hot-toast";
 
-// Página de historial de transacciones, muestra una lista combinada de ingresos y gastos
+import { useState } from "react";
+
+import EditTransactionModal from "../components/EditTransactionModal";
+
+import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
+
+import { toastService, mensajes } from "../services/toastService";
+
+import { useUsuario } from "../hooks/useUsuario";
+
 export default function History() {
-  // Estado para almacenar el usuario actual
-  const [usuario, setUsuario] = useState<User | null>(null);
+  // Obtenemos el usuario desde el hook
+  const { usuario } = useUsuario();
 
   // Estado para la transacción que se está editando
   const [transaccionAEditar, setTransaccionAEditar] = useState<any | null>(
@@ -38,9 +44,6 @@ export default function History() {
 
     // Acción para eliminar un movimiento
     eliminarMovimiento,
-
-    // Acción para obtener los datos
-    obtenerDatos,
   } = useFinanceStore();
 
   // Combinamos ingresos y gastos en un solo array
@@ -65,20 +68,6 @@ export default function History() {
       );
     });
 
-  // Obtiene el usuario actual y carga sus datos
-  useEffect(() => {
-    // Obtenemos el usuario autenticado
-    supabase.auth.getUser().then(({ data }) => {
-      if (data.user) {
-        // Guardamos el usuario
-        setUsuario(data.user);
-
-        // Cargamos los datos de finanzas
-        obtenerDatos(data.user.id);
-      }
-    });
-  }, [obtenerDatos]);
-
   // Maneja la eliminación de un movimiento
   const confirmarBorrado = async () => {
     if (transaccionAEliminar && usuario) {
@@ -88,10 +77,10 @@ export default function History() {
           transaccionAEliminar.id,
           usuario.id,
         );
-        toast.success("Transacción eliminada correctamente");
+        toastService.success(mensajes.transacciones.eliminado);
         setTransaccionAEliminar(null);
-      } catch (error) {
-        toast.error("No se pudo eliminar la transacción");
+      } catch {
+        toastService.error(mensajes.transacciones.errorEliminar);
       }
     }
   };
@@ -147,7 +136,7 @@ export default function History() {
                   <p className="font-medium text-gray-200">
                     {transaccion.descripcion}
                   </p>
-
+                  
                   {/* Fecha formateada en español */}
                   <p className="text-xs text-gray-500 uppercase">
                     {new Date(transaccion.fecha).toLocaleDateString("es-ES", {

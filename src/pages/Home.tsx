@@ -1,19 +1,27 @@
-import { useEffect, useState, useMemo } from "react";
-import { supabase } from "../lib/supabaseClient";
-import type { User } from "@supabase/supabase-js";
-import { useFinanceStore } from "../store/useFinanceStore";
-import { Header } from "../components/Header";
-import { SummaryCards } from "../components/SummaryCards";
-import { TransactionForm } from "../components/TransactionForm";
-import { ActivityList } from "../components/ActivityList";
-import { TrendChart } from "../components/TrendChart";
-import { DashboardSkeleton } from "../components/Skeleton";
-import toast from "react-hot-toast";
-
 // Página principal del dashboard de finanzas personales
+import { useMemo } from "react";
+
+import { useFinanceStore } from "../store/useFinanceStore";
+
+import { Header } from "../components/Header";
+
+import { SummaryCards } from "../components/SummaryCards";
+
+import { TransactionForm } from "../components/TransactionForm";
+
+import { ActivityList } from "../components/ActivityList";
+
+import { TrendChart } from "../components/TrendChart";
+
+import { DashboardSkeleton } from "../components/Skeleton";
+
+import { toastService, mensajes } from "../services/toastService";
+
+import { useUsuario } from "../hooks/useUsuario";
+
 export default function Home() {
-  // Estado para almacenar los datos del usuario autenticado
-  const [usuario, setUsuario] = useState<User | null>(null);
+  // Obtenemos el usuario y estado de carga desde el hook
+  const { usuario, usuarioListo } = useUsuario();
 
   // Extraemos el estado y las acciones de la store de Zustand
   const {
@@ -24,7 +32,6 @@ export default function Home() {
     cargandoInicial,
 
     // Acciones de la store
-    obtenerDatos,
     agregarMovimiento,
   } = useFinanceStore();
 
@@ -38,25 +45,6 @@ export default function Home() {
       balance: totalIngresos - totalGastos,
     };
   }, [ingresos, gastos]);
-
-  // Effect que se ejecuta al montar el componente
-  // Obtiene el usuario actual y carga sus datos de finanzas
-  useEffect(() => {
-    const cargarSesion = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (user) {
-        setUsuario(user);
-
-        // forzarRefresco = true solo la primera vez para asegurar
-        // que si la caché quedó "sucia" con arrays vacíos, se limpie.
-        await obtenerDatos(user.id, true);
-      }
-    };
-
-    cargarSesion();
-  }, []);
 
   // Maneja la adición de un nuevo movimiento (ingreso o gasto)
   const manejarNuevoMovimiento = async (
@@ -76,13 +64,13 @@ export default function Home() {
     });
 
     if (resultado) {
-      toast.success(
+      toastService.success(
         tipo === "ingresos"
-          ? "Ingreso registrado con éxito"
-          : "Gasto registrado con éxito",
+          ? mensajes.transacciones.ingresoRegistrado
+          : mensajes.transacciones.gastoRegistrado,
       );
     } else {
-      toast.error("Hubo un problema al guardar el movimiento");
+      toastService.error(mensajes.transacciones.errorGuardar);
     }
 
     return resultado;
@@ -90,8 +78,8 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#070808] text-white p-4 font-sans antialiased">
-      {/* Si es la primera carga, mostramos el esqueleto (skeleton) */}
-      {cargandoInicial ? (
+      {/* Si es la primera carga o el usuario no está listo, mostramos el esqueleto */}
+      {!usuarioListo || cargandoInicial ? (
         <DashboardSkeleton />
       ) : (
         /* Si ya cargaron los datos, mostramos el dashboard completo */

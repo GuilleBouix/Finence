@@ -1,12 +1,26 @@
+// Página de opciones y configuración del usuario
 import { useState } from "react";
+
 import { Header } from "../components/Header";
+
 import { LuUser, LuTrash2, LuTriangleAlert, LuX } from "react-icons/lu";
+
 import { supabase } from "../lib/supabaseClient";
+
 import { useFinanceStore } from "../store/useFinanceStore";
-import toast from "react-hot-toast";
+
+import { toastService, mensajes } from "../services/toastService";
+
+import { useUsuario } from "../hooks/useUsuario";
+
+import { URLs, TABLAS } from "../constants";
 
 export default function Options() {
-  const { usuario, setUsuario, obtenerDatos } = useFinanceStore();
+  // Obtenemos el usuario desde el hook
+  const { usuario } = useUsuario();
+
+  // Extraemos las acciones de la store
+  const { setUsuario, obtenerDatos } = useFinanceStore();
 
   // Estado para la nueva URL del avatar
   const [newAvatarUrl, setNewAvatarUrl] = useState("");
@@ -35,11 +49,11 @@ export default function Options() {
     });
 
     if (error) {
-      toast.error("Error al actualizar la foto");
+      toastService.error(mensajes.perfil.errorFoto);
     } else {
       setUsuario(data.user);
       setNewAvatarUrl("");
-      toast.success("Foto de perfil actualizada");
+      toastService.success(mensajes.perfil.fotoActualizada);
     }
     setIsUpdating(false);
   };
@@ -49,15 +63,15 @@ export default function Options() {
     if (!usuario) return;
     try {
       await Promise.all([
-        supabase.from("ingresos").delete().eq("user_id", usuario.id),
-        supabase.from("gastos").delete().eq("user_id", usuario.id),
+        supabase.from(TABLAS.ingresos).delete().eq("user_id", usuario.id),
+        supabase.from(TABLAS.gastos).delete().eq("user_id", usuario.id),
       ]);
       await obtenerDatos(usuario.id, true);
 
       setModalOpen(false);
-      toast.success("Todos los datos han sido borrados");
-    } catch (error) {
-      toast.error("Hubo un error al resetear los datos");
+      toastService.success(mensajes.datos.reseteados);
+    } catch {
+      toastService.error(mensajes.datos.errorResetear);
     }
   };
 
@@ -90,20 +104,20 @@ export default function Options() {
                 Perfil
               </h2>
             </div>
-
+            
             <div className="flex flex-col sm:flex-row items-center gap-6">
               {/* Imagen de perfil actual */}
               <div className="relative group">
                 <img
                   src={
                     usuario?.user_metadata?.avatar_url ||
-                    "https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg"
+                    URLs.avatarDefault
                   }
                   alt="Perfil"
                   className="w-20 h-20 rounded-full object-cover border-2 border-[#222]"
                 />
               </div>
-
+              
               {/* Campos para actualizar avatar */}
               <div className="flex-1 space-y-4 w-full">
                 <div>
