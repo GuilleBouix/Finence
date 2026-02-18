@@ -1,13 +1,9 @@
-// Componente de protección de rutas
-// Verifica si el usuario está autenticado antes de mostrar el contenido
 import { useEffect, useState } from "react";
-
 import { Navigate } from "react-router-dom";
-
 import { supabase } from "../lib/supabaseClient";
-
 import type { Session } from "@supabase/supabase-js";
 
+// Verifica si el usuario está autenticado antes de mostrar el contenido
 export default function ProtectedRoute({
   children,
 }: {
@@ -15,7 +11,7 @@ export default function ProtectedRoute({
 }) {
   // Estado para almacenar la sesión del usuario
   const [sesion, setSesion] = useState<Session | null>(null);
-  
+
   // Estado para indicar si estamos verificando la sesión
   const [cargando, setCargando] = useState(true);
 
@@ -26,7 +22,7 @@ export default function ProtectedRoute({
     supabase.auth.getSession().then(({ data: { session } }) => {
       // Guardamos la sesión en el estado
       setSesion(session);
-      
+
       // Terminamos la carga
       setCargando(false);
     });
