@@ -1,7 +1,7 @@
 // Página de opciones y configuración del usuario
 import { useState } from "react";
 
-import { Header } from "../components/Header";
+import { Header } from "../components/common/Header";
 
 import { LuUser, LuTrash2, LuTriangleAlert, LuX } from "react-icons/lu";
 
@@ -104,20 +104,17 @@ export default function Options() {
                 Perfil
               </h2>
             </div>
-            
+
             <div className="flex flex-col sm:flex-row items-center gap-6">
               {/* Imagen de perfil actual */}
               <div className="relative group">
                 <img
-                  src={
-                    usuario?.user_metadata?.avatar_url ||
-                    URLs.avatarDefault
-                  }
+                  src={usuario?.user_metadata?.avatar_url || URLs.avatarDefault}
                   alt="Perfil"
                   className="w-20 h-20 rounded-full object-cover border-2 border-[#222]"
                 />
               </div>
-              
+
               {/* Campos para actualizar avatar */}
               <div className="flex-1 space-y-4 w-full">
                 <div>

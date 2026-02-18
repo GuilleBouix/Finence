@@ -2,7 +2,7 @@
 // Muestra la foto de perfil y el email del usuario con animacion de expansion
 import type { User } from "@supabase/supabase-js";
 
-import { URLs } from "../constants";
+import { URLs } from "../../constants";
 
 interface UserWidgetProps {
   usuario: User | null;
@@ -21,10 +21,7 @@ export const UserWidget = ({
   >
     {/* Imagen de perfil del usuario */}
     <img
-      src={
-        usuario?.user_metadata?.avatar_url ||
-        URLs.avatarDefault
-      }
+      src={usuario?.user_metadata?.avatar_url || URLs.avatarDefault}
       className="w-6 h-6 rounded-full object-cover z-10 border border-[#333] shrink-0 pointer-events-none"
       alt="User"
     />

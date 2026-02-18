@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 
-import { useFinanceStore } from "../store/useFinanceStore";
+import { useFinanceStore } from "../../store/useFinanceStore";
 
 import { LuPencil } from "react-icons/lu";
 
-import { toastService, mensajes } from "../services/toastService";
+import { toastService, mensajes } from "../../services/toastService";
 
 interface EditTransactionModalProps {
   transaction: any | null;

@@ -7,9 +7,8 @@ import {
   LuTrendingDown,
 } from "react-icons/lu";
 
-import { toastService } from "../services/toastService";
-
-import type { FuncionAgregarMovimiento } from "../types/finance";
+import { toastService } from "../../services/toastService";
+import type { FuncionAgregarMovimiento } from "../../types/finance";
 
 export const TransactionForm = ({
   onAdd,

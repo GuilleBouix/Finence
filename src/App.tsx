@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 import History from "./pages/History";
 import Options from "./pages/Options";
 import ProtectedRoute from "./routes/ProtectedRoute";
-import { TitleUpdater } from "./components/TitleUpdater";
+import { TitleUpdater } from "./components/ui/TitleUpdater";
 import { useFinanceStore } from "./store/useFinanceStore";
 import { Toaster } from "react-hot-toast";
 

@@ -3,11 +3,11 @@ import { useState } from "react";
 
 import { LuLogOut, LuHistory, LuSettings } from "react-icons/lu";
 
-import { supabase } from "../lib/supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
 
 import { useNavigate, Link } from "react-router-dom";
 
-import { useFinanceStore } from "../store/useFinanceStore";
+import { useFinanceStore } from "../../store/useFinanceStore";
 
 import { UserWidget } from "./UserWidget";
 

@@ -1,5 +1,5 @@
 import { LuTrendingUp, LuTrendingDown, LuScale } from "react-icons/lu";
-import type { Totales } from "../types/finance";
+import type { Totales } from "../../types/finance";
 
 // Componente de tarjetas resumen para mostrar ingresos, gastos y balance
 export const SummaryCards = ({ totales }: { totales: Totales }) => (

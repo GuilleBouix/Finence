@@ -78,7 +78,7 @@ export default function Login() {
             disabled={cargando}
             className={`mt-2 py-3 rounded text-sm font-medium transition-all cursor-pointer animate-fade-down animate-delay-150 ${
               cargando
-                ? "bg-gray-800 text-gray-500"
+                ? "bg-[#22c55e]/75 text-gray-800"
                 : "bg-[#22c55e] text-black hover:bg-[#22c55e]/80 active:scale-95"
             }`}
           >

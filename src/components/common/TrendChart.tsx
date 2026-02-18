@@ -9,7 +9,7 @@ import {
 } from "recharts";
 import { LuChartSpline, LuInfo } from "react-icons/lu";
 import { useState, useMemo } from "react";
-import type { Movimiento } from "../types/finance";
+import type { Movimiento } from "../../types/finance";
 
 interface TrendChartProps {
   ingresos: Movimiento[];

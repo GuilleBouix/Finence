@@ -1,24 +1,15 @@
-// Página principal del dashboard de finanzas personales
 import { useMemo } from "react";
-
 import { useFinanceStore } from "../store/useFinanceStore";
-
-import { Header } from "../components/Header";
-
-import { SummaryCards } from "../components/SummaryCards";
-
-import { TransactionForm } from "../components/TransactionForm";
-
-import { ActivityList } from "../components/ActivityList";
-
-import { TrendChart } from "../components/TrendChart";
-
-import { DashboardSkeleton } from "../components/Skeleton";
-
+import { Header } from "../components/common/Header";
+import { SummaryCards } from "../components/common/SummaryCards";
+import { TransactionForm } from "../components/forms/TransactionForm";
+import { ActivityList } from "../components/common/ActivityList";
+import { TrendChart } from "../components/common/TrendChart";
+import { DashboardSkeleton } from "../components/ui/Skeleton";
 import { toastService, mensajes } from "../services/toastService";
-
 import { useUsuario } from "../hooks/useUsuario";
 
+// Página principal del dashboard de finanzas personales
 export default function Home() {
   // Obtenemos el usuario y estado de carga desde el hook
   const { usuario, usuarioListo } = useUsuario();

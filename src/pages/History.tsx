@@ -1,7 +1,7 @@
 // Página de historial de transacciones, muestra una lista combinada de ingresos y gastos
 import { useFinanceStore } from "../store/useFinanceStore";
 
-import { Header } from "../components/Header";
+import { Header } from "../components/common/Header";
 
 import {
   LuTrash2,
@@ -14,9 +14,9 @@ import {
 
 import { useState } from "react";
 
-import EditTransactionModal from "../components/EditTransactionModal";
+import EditTransactionModal from "../components/modals/EditTransactionModal";
 
-import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
+import ConfirmDeleteModal from "../components/modals/ConfirmDeleteModal";
 
 import { toastService, mensajes } from "../services/toastService";
 
@@ -136,7 +136,7 @@ export default function History() {
                   <p className="font-medium text-gray-200">
                     {transaccion.descripcion}
                   </p>
-                  
+
                   {/* Fecha formateada en español */}
                   <p className="text-xs text-gray-500 uppercase">
                     {new Date(transaccion.fecha).toLocaleDateString("es-ES", {
