@@ -13,6 +13,15 @@ Finence es una aplicacion web para gestionar tus finanzas personales. Controla t
 - **Autenticación segura**: Sistema de inicio de sesión con Supabase Auth
 - **Diseño responsivo**: Interfaz adaptativa que funciona en dispositivos móviles y escritorio
 
+## Capturas de Pantalla
+
+<p>
+   <img width="410" alt="1" src="https://github.com/user-attachments/assets/527c6fdb-f505-428f-97ee-84c98bb348ae" />
+   <img width="410" alt="2" src="https://github.com/user-attachments/assets/d142a3f3-6837-4f4b-b1cc-5daa02293b62" />
+   <img width="410" alt="3" src="https://github.com/user-attachments/assets/9c3345e9-bad6-4d3c-afb5-76226ccdea18" />
+   <img width="410" alt="4" src="https://github.com/user-attachments/assets/08cd9203-6b0c-431c-acec-a59e2136afca" />
+</p>
+
 ## Tecnologias
 
 - **Frontend**: React 19 con TypeScript
@@ -79,7 +88,7 @@ npm run dev
 
 La aplicacion estara disponible en `http://localhost:5173`
 
-### Navegacion
+### Navegación
 
 - **Login**: Pagina de autenticacion para usuarios nuevos y existentes
 - **Home**: Panel principal con resumen de finanzas y grafico de tendencias
@@ -138,7 +147,7 @@ La aplicacion sigue una arquitectura basada en:
 
 - **Hooks personalizados**: Lógica de negocio encapsulada (useAuth, useUsuario)
 - **Store centralizado**: Estado global con Zustand
-- **Composicion de componentes**: Componentes pequenos y reutilizables
+- **Composicion de componentes**: Componentes pequeños y reutilizables
 - **Separacion de preocupaciones**: Servicios, tipos, constantes y componentes separados
 
 ### Flujo de datos
@@ -173,4 +182,4 @@ Este proyecto esta bajo la Licencia MIT. Consulta el archivo `LICENSE` para mas 
 
 ---
 
-Desarrollado para ayudarte a controlar tus finanzas.
+Desarrollado como proyecto de práctica.
