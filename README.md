@@ -9,10 +9,9 @@ Finence es una aplicacion web para gestionar tus finanzas personales. Controla t
 - **Gestion de transacciones**: Agrega, edita y elimina ingresos y gastos
 - **Resumen financiero**: Visualiza tus ingresos totales, gastos y balance en tiempo real
 - **Historial completo**: Consulta todas tus transacciones pasadas con detalles
-- **Grafico de tendencias**: Observa la evolucion de tus finanzas con graficos visuales
-- **Autenticacion segura**: Sistema de inicio de sesion con Supabase Auth
-- **Diseño responsivo**: Interfaz adaptativa que funciona en dispositivos moviles y escritorio
-- **Interfaz moderna**: Tema oscuro con acentos en verde
+- **Gráfico de tendencias**: Observa la evolución de tus finanzas con gráficos visuales
+- **Autenticación segura**: Sistema de inicio de sesión con Supabase Auth
+- **Diseño responsivo**: Interfaz adaptativa que funciona en dispositivos móviles y escritorio
 
 ## Tecnologias
 
@@ -36,12 +35,14 @@ Finence es una aplicacion web para gestionar tus finanzas personales. Controla t
 ## Instalacion
 
 1. Clona el repositorio:
+
 ```bash
 git clone https://github.com/tu-usuario/finence.git
 cd finence
 ```
 
 2. Instala las dependencias:
+
 ```bash
 npm install
 # o si prefieres pnpm
@@ -51,6 +52,7 @@ pnpm install
 3. Configura las variables de entorno:
    - Crea un archivo `.env` en la raiz del proyecto
    - Anade tus credenciales de Supabase:
+
 ```env
 VITE_SUPABASE_URL=tu_url_de_supabase
 VITE_SUPABASE_KEY=tu_clave_anonima
@@ -70,6 +72,7 @@ VITE_SUPABASE_KEY=tu_clave_anonima
 ## Uso
 
 Inicia el servidor de desarrollo:
+
 ```bash
 npm run dev
 ```
@@ -130,13 +133,16 @@ src/
 ## Arquitectura
 
 ### Patron de diseño
+
 La aplicacion sigue una arquitectura basada en:
+
 - **Hooks personalizados**: Lógica de negocio encapsulada (useAuth, useUsuario)
 - **Store centralizado**: Estado global con Zustand
 - **Composicion de componentes**: Componentes pequenos y reutilizables
 - **Separacion de preocupaciones**: Servicios, tipos, constantes y componentes separados
 
 ### Flujo de datos
+
 1. El usuario se autentica mediante Supabase Auth
 2. Los datos se almacenan en la store de Zustand
 3. Los componentes consumen la store directamente
@@ -144,11 +150,11 @@ La aplicacion sigue una arquitectura basada en:
 
 ## Scripts Disponibles
 
-| Comando | Descripcion |
-|---------|-------------|
-| `npm run dev` | Inicia el servidor de desarrollo |
-| `npm run build` | Compila para produccion |
-| `npm run lint` | Ejecuta el linter |
+| Comando           | Descripcion                         |
+| ----------------- | ----------------------------------- |
+| `npm run dev`     | Inicia el servidor de desarrollo    |
+| `npm run build`   | Compila para produccion             |
+| `npm run lint`    | Ejecuta el linter                   |
 | `npm run preview` | Previsualiza el build de produccion |
 
 ## Contribución
