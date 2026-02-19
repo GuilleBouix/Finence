@@ -1,28 +1,31 @@
-<img width="2334" height="664" alt="550028003-5ed2d96f-e42e-4b7d-b68a-d961166bed1e" src="https://github.com/user-attachments/assets/5a2b7784-8c88-4da9-a717-2e866d270680" />
+<img width="2334" height="664" alt="FINENCE" src="https://github.com/user-attachments/assets/5a2b7784-8c88-4da9-a717-2e866d270680" />
 
 # Finence - Control de Transacciones
 
-Finence es una aplicación web simple para gestionar tus finanzas personales. Controla tus ingresos y gastos de manera sencilla, visualiza tu historial financiero y mantén un registro detallado de todas tus transacciones.
+Finence es una aplicacion web para gestionar tus finanzas personales. Controla tus ingresos y gastos de manera sencilla, visualiza tu historial financiero y mantien un registro detallado de todas tus transacciones.
 
-## Características
+## Caracteristicas
 
-- **Gestión de transacciones**: Agrega, edita y elimina ingresos y gastos
+- **Gestion de transacciones**: Agrega, edita y elimina ingresos y gastos
 - **Resumen financiero**: Visualiza tus ingresos totales, gastos y balance en tiempo real
 - **Historial completo**: Consulta todas tus transacciones pasadas con detalles
-- **Gráfico de tendencias**: Observa la evolución de tus finanzas con gráficos visuales
-- **Autenticación segura**: Sistema de inicio de sesión con Supabase Auth
-- **Diseño responsivo**: Interfaz adaptativa que funciona en dispositivos móviles y escritorio
+- **Grafico de tendencias**: Observa la evolucion de tus finanzas con graficos visuales
+- **Autenticacion segura**: Sistema de inicio de sesion con Supabase Auth
+- **Diseño responsivo**: Interfaz adaptativa que funciona en dispositivos moviles y escritorio
+- **Interfaz moderna**: Tema oscuro con acentos en verde
 
-## Tecnologías
+## Tecnologias
 
 - **Frontend**: React 19 con TypeScript
 - **Build**: Vite
 - **Estilos**: TailwindCSS v4
 - **Estado**: Zustand
-- **Autenticación**: Supabase Auth
+- **Autenticacion**: Supabase Auth
 - **Base de datos**: Supabase (PostgreSQL)
-- **Gráficos**: Recharts
+- **Graficos**: Recharts
 - **Enrutamiento**: React Router DOM v7
+- **Iconos**: React Icons
+- **Notificaciones**: React Hot Toast
 
 ## Requisitos previos
 
@@ -30,7 +33,7 @@ Finence es una aplicación web simple para gestionar tus finanzas personales. Co
 - npm o pnpm
 - Cuenta de Supabase (para la base de datos)
 
-## Instalación
+## Instalacion
 
 1. Clona el repositorio:
 ```bash
@@ -46,23 +49,23 @@ pnpm install
 ```
 
 3. Configura las variables de entorno:
-   - Crea un archivo `.env` en la raíz del proyecto
-   - Añade tus credenciales de Supabase:
+   - Crea un archivo `.env` en la raiz del proyecto
+   - Anade tus credenciales de Supabase:
 ```env
 VITE_SUPABASE_URL=tu_url_de_supabase
-VITE_SUPABASE_ANON_KEY=tu_clave_anonima
+VITE_SUPABASE_KEY=tu_clave_anonima
 ```
 
-## Configuración de Supabase
+## Configuracion de Supabase
 
 1. Crea un proyecto en [Supabase](https://supabase.com)
-2. Crea una tabla llamada `movimientos` con las siguientes columnas:
+2. Crea dos tablas: `ingresos` y `gastos` con las siguientes columnas:
    - `id` (uuid, primary key, default: gen_random_uuid())
    - `monto` (numeric)
    - `descripcion` (text)
    - `fecha` (timestamp with time zone)
    - `user_id` (uuid, foreign key referencing auth.users)
-3. Configura las políticas RLS (Row Level Security) para permitir acceso solo al usuario propietario
+3. Configura las politicas RLS (Row Level Security) para permitir acceso solo al usuario propietario
 
 ## Uso
 
@@ -71,69 +74,97 @@ Inicia el servidor de desarrollo:
 npm run dev
 ```
 
-La aplicación estará disponible en `http://localhost:5173`
+La aplicacion estara disponible en `http://localhost:5173`
 
-### Navegación
+### Navegacion
 
-- **Login**: Página de autenticación para usuarios nuevos y existentes
-- **Home**: Panel principal con resumen de finanzas y gráfico de tendencias
+- **Login**: Pagina de autenticacion para usuarios nuevos y existentes
+- **Home**: Panel principal con resumen de finanzas y grafico de tendencias
 - **Historial**: Lista completa de todas las transacciones
-- **Opciones**: Configuración de la cuenta (aún no disponible)
+- **Opciones**: Configuracion de la cuenta y zona de peligro (reset de datos)
 
 ## Estructura del Proyecto
 
 ```
 src/
-├── components/       # Componentes reutilizables de UI
-│   ├── ActivityList.tsx
-│   ├── ConfirmDeleteModal.tsx
-│   ├── EditTransactionModal.tsx
-│   ├── Header.tsx
-│   ├── Skeleton.tsx
-│   ├── SummaryCards.tsx
-│   ├── TitleUpdater.tsx
-│   ├── TotalCard.tsx
-│   ├── TransactionForm.tsx
-│   └── TrendChart.tsx
-├── layouts/         # Componentes de diseño
-│   └── ProtectedRoute.tsx
-├── pages/           # Páginas de la aplicación
+├── components/           # Componentes de la aplicacion
+│   ├── common/           # Componentes reutilizables
+│   │   ├── ActivityList.tsx
+│   │   ├── Header.tsx
+│   │   ├── SummaryCards.tsx
+│   │   ├── TrendChart.tsx
+│   │   └── UserWidget.tsx
+│   ├── forms/            # Formularios
+│   │   └── TransactionForm.tsx
+│   ├── modals/           # Modales
+│   │   ├── ConfirmDeleteModal.tsx
+│   │   └── EditTransactionModal.tsx
+│   └── ui/               # Componentes de UI basica
+│       ├── Skeleton.tsx
+│       └── TitleUpdater.tsx
+├── constants/            # Constantes de la aplicacion
+│   └── index.ts
+├── hooks/                # Hooks personalizados
+│   ├── useAuth.ts
+│   └── useUsuario.ts
+├── lib/                  # Configuracion de librerias
+│   └── supabaseClient.ts
+├── pages/                # Paginas de la aplicacion
 │   ├── History.tsx
 │   ├── Home.tsx
 │   ├── Login.tsx
 │   └── Options.tsx
-├── services/        # Servicios externos
-│   └── supabaseClient.ts
-├── store/           # Gestión de estado global
+├── routes/               # Configuracion de rutas
+│   └── ProtectedRoute.tsx
+├── services/            # Servicios externos
+│   └── toastService.ts
+├── store/               # Gestion de estado global (Zustand)
 │   └── useFinanceStore.ts
-├── types/           # Definiciones de TypeScript
+├── types/               # Definiciones de TypeScript
 │   └── finance.ts
-├── App.tsx          # Componente principal con rutas
-├── globals.css      # Estilos globales y Tailwind
-└── main.tsx         # Punto de entrada
+├── App.tsx              # Componente principal con rutas
+├── globals.css          # Estilos globales y Tailwind
+└── main.tsx            # Punto de entrada
 ```
+
+## Arquitectura
+
+### Patron de diseño
+La aplicacion sigue una arquitectura basada en:
+- **Hooks personalizados**: Lógica de negocio encapsulada (useAuth, useUsuario)
+- **Store centralizado**: Estado global con Zustand
+- **Composicion de componentes**: Componentes pequenos y reutilizables
+- **Separacion de preocupaciones**: Servicios, tipos, constantes y componentes separados
+
+### Flujo de datos
+1. El usuario se autentica mediante Supabase Auth
+2. Los datos se almacenan en la store de Zustand
+3. Los componentes consumen la store directamente
+4. Las operaciones se realizan a traves de la store
 
 ## Scripts Disponibles
 
-| Comando | Descripción |
+| Comando | Descripcion |
 |---------|-------------|
 | `npm run dev` | Inicia el servidor de desarrollo |
-| `npm run build` | Compila para producción |
+| `npm run build` | Compila para produccion |
 | `npm run lint` | Ejecuta el linter |
-| `npm run preview` | Previsualiza el build de producción |
+| `npm run preview` | Previsualiza el build de produccion |
 
 ## Contribución
 
-¡Las contribuciones son bienvenidas! Si deseas mejorar Finence:
+Las contribuciones son bienvenidas! Si deseas mejorar Finence:
 
 1. Haz fork del repositorio
-2. Crea una rama para tu característica (`git checkout -b feature/nueva-caracteristica`)
+2. Crea una rama para tu caracteristica (`git checkout -b feature/nueva-caracteristica`)
 3. Realiza tus cambios y commitea (`git commit -m 'Agregar nueva característica'`)
 4. Push a la rama (`git push origin feature/nueva-caracteristica`)
 5. Abre un Pull Request
 
 ## Licencia
 
-Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más información.
+Este proyecto esta bajo la Licencia MIT. Consulta el archivo `LICENSE` para mas informacion.
 
 ---
+
+Desarrollado para ayudarte a controlar tus finanzas.
