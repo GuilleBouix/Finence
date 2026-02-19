@@ -13,6 +13,16 @@ Finence es una aplicación web simple para gestionar tus finanzas personales. Co
 - **Autenticación segura**: Sistema de inicio de sesión con Supabase Auth
 - **Diseño responsivo**: Interfaz adaptativa que funciona en dispositivos móviles y escritorio
 
+## Capturas
+
+<p>
+   <img width="410" alt="1" src="https://github.com/user-attachments/assets/27353f53-84bb-48dc-af4a-4c5f6a3d3900" />
+   <img width="410" alt="2" src="https://github.com/user-attachments/assets/4ce778d1-b129-47ae-a8ba-058e54bc2c88" />
+   <img width="410" alt="3" src="https://github.com/user-attachments/assets/898ff882-2c6c-4bf2-a6e3-ccc24ae123e6" />
+   <img width="410" alt="4" src="https://github.com/user-attachments/assets/d77f9459-e111-414f-9578-3d0cec37a2e5" />
+</p>
+
+
 ## Tecnologías
 
 - **Frontend**: React 19 con TypeScript
